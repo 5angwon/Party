@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>퀴즈를 풀면 열리는 초대장 🎉</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #f6d365, #fda085);
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    p.subtitle {
+      text-align: center;
+      margin-top: 0;
+      color: #666;
+    }
+    .question {
+      margin: 24px 0 12px;
+      font-weight: 600;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      background: #ff7a18;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ff6a00;
+    }
+    .result {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .invite {
+      display: none;
+      margin-top: 30px;
+      text-align: center;
+    }
+    .invite img {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎄 초대장 퀴즈 🎄</h1>
+    <p class="subtitle">아래 5문제 중 <strong>3문제 이상</strong> 맞히면 초대장이 열립니다!</p>
+
+    <form id="quizForm">
+      <div class="question">1. 산타클로스의 범죄 혐의로 의심되는 것이 아닌 것은?</div>
+      <div class="options">
+        <label><input type="radio" name="q1" value="1"> 특수 폭행</label>
+        <label><input type="radio" name="q1" value="0"> 근로기준법 위반</label>
+        <label><input type="radio" name="q1" value="0"> 음주운전 의혹</label>
+      </div>
+
+      <div class="question">2. 산타가 없는 것에 가장 실망한 사람은?</div>
+      <div class="options">
+        <label><input type="radio" name="q2" value="0"> 쇼미더머니6 조우찬</label>
+        <label><input type="radio" name="q2" value="1"> 초등학교 2학년 시절 이상원</label>
+        <label><input type="radio" name="q2" value="0"> 알래스카의 김상덕씨</label>
+      </div>
+
+      <div class="question">3. 크리스마스의 대표 영화가 아닌 것은?</div>
+      <div class="options">
+        <label><input type="radio" name="q3" value="0"> 팀 버튼의 크리스마스 악몽</label>
+        <label><input type="radio" name="q3" value="0"> 나홀로집에</label>
+        <label><input type="radio" name="q3" value="1"> 거북이는 의외로 빨리 헤엄친다</label>
+      </div>
+
+      <div class="question">4. 파티룸에서 가장 마지막에 꼭 해야 할 일은?</div>
+      <div class="options">
+        <label><input type="radio" name="q4" value="0"> 청소가 시작될 것 같아 신발끈 묶기</label>
+        <label><input type="radio" name="q4" value="1"> 일사불란하게 움직여서 다 같이 청소하기</label>
+        <label><input type="radio" name="q4" value="0"> 잠깐 화장실 좀 다녀온다하고 청소 끝나고 들어오기</label>
+      </div>
+
+      <div class="question">5. 파티에 참석하는 인원수는?</div>
+      <div class="options">
+        <label><input type="radio" name="q5" value="0"> 서른마흔다섯명</label>
+        <label><input type="radio" name="q5" value="1"> 12명</label>
+        <label><input type="radio" name="q5" value="0"> You & Me</label>
+      </div>
+
+      <button type="submit">채점하기</button>
+    </form>
+
+    <div class="result" id="result"></div>
+
+    <div class="invite" id="invite">
+      <h2>🎉 초대장이 열렸습니다! 🎉</h2>
+      <p>아래 버튼을 눌러 초대장을 확인해주세요 👇</p>
+      <a id="notionLink" href="https://innate-quilt-eb3.notion.site/Rl-r-I-D-2ced21a3a42e80e29199f0ec83d0084f" target="_blank" style="display:inline-block;margin-top:16px;padding:14px 20px;background:#2f3437;color:#fff;text-decoration:none;border-radius:12px;font-weight:600;">노션 초대장 보러가기</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('quizForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      let score = 0;
+      const formData = new FormData(this);
+      for (let value of formData.values()) {
+        score += Number(value);
+      }
+
+      const result = document.getElementById('result');
+      const invite = document.getElementById('invite');
+
+      if (score >= 3) {
+        result.textContent = `정답 ${score}개! 성공 🎊`;
+        invite.style.display = 'block';
+      } else {
+        result.textContent = `정답 ${score}개… 조금만 더! 😆`;
+        invite.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
